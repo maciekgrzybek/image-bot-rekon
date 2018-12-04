@@ -3,7 +3,7 @@ const { auth } = require('./auth')
 
 
 // request options
-const replyToTweet = async (status, tweetId) => {
+const replyToTweet = (status, tweetId) => {
 
   const request_options = {
     url: 'https://api.twitter.com/1.1/statuses/update.json?',
@@ -22,6 +22,7 @@ const replyToTweet = async (status, tweetId) => {
     request.post(request_options)
       .then((response) => {
         resolve(response);
+        console.log(response)
       })
       .catch((response) => {
         reject(response);
