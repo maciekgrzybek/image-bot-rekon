@@ -17,18 +17,11 @@ const replyToTweet = async (status, tweetId) => {
   };
 
   // POST request to create webhook config
-  const postResponse = await request.post(requestOptions);
-  console.log(postResponse);
-  // return new Promise((resolve, reject) => {
-
-  //   request.post(requestOptions)
-  //     .then((response) => {
-  //       resolve(response);
-  //       console.log(response)
-  //     })
-  //     .catch((response) => {
-  //       reject(response);
-  //     });
-  // });
+  try {
+    const postResponse = await request.post(requestOptions);
+    console.log(postResponse);
+  } catch (e) {
+    console.log(e);
+  }
 };
 module.exports = { replyToTweet };
