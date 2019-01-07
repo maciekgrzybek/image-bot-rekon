@@ -1,11 +1,11 @@
-const request = require('request-promise')
-const { auth } = require('./auth')
+/* eslint no-console: 0 */
+const request = require('request-promise');
+const { auth } = require('./auth');
 
 
 // request options
-const replyToTweet = (status, tweetId) => {
-
-  const request_options = {
+const replyToTweet = async (status, tweetId) => {
+  const requestOptions = {
     url: 'https://api.twitter.com/1.1/statuses/update.json?',
     oauth: auth.credentials,
     form: {
@@ -13,20 +13,17 @@ const replyToTweet = (status, tweetId) => {
       in_reply_to_status_id: tweetId,
       auto_populate_reply_metadata: true,
     },
+    headers: {
+      Connection: 'Keep-Alive',
+    },
     resolveWithFullResponse: true,
+  };
+
+  try {
+    await request.post(requestOptions);
+  } catch (err) {
+    console.log(err);
+    console.log('Cannot post tweet');
   }
-
-  // POST request to create webhook config
-  return new Promise((resolve, reject) => {
-
-    request.post(request_options)
-      .then((response) => {
-        resolve(response);
-        console.log(response)
-      })
-      .catch((response) => {
-        reject(response);
-      });
-  });
 };
 module.exports = { replyToTweet };
