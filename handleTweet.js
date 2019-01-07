@@ -1,27 +1,34 @@
 /* eslint no-console: 0 */
+const { uploadImage } = require('./helpers/uploadImage');
+const { createMessage } = require('./helpers/createMessage');
 const { replyToTweet } = require('./helpers/replyToTweet');
 
-
-module.exports.handler = (event) => {
+module.exports.handler = async (event) => {
   const tweet = JSON.parse(event.body);
-  const tweetEvents = tweet.tweet_create_events;
-  if (typeof tweetEvents === 'undefined' || tweetEvents.length < 1) {
+  const tweetData = tweet.tweet_create_events;
+  if (typeof tweetData === 'undefined' || tweetData.length < 1) {
     console.log('Not a new tweet event');
     return;
   }
 
-  if (tweet.for_user_id === tweetEvents[0].user.id_str) {
+  if (tweet.for_user_id === tweetData[0].user.id_str) {
     console.log('Same user, not sending response.');
     return;
   }
 
-  const { id_str, user } = tweet.tweet_create_events[0]; // eslint-disable-line
+  const { id_str, user, entities } = tweetData[0]; // eslint-disable-line
+  const key = `${id_str}___${user.screen_name}`; // eslint-disable-line
 
-  replyToTweet(`Response to @${user.screen_name}. Hope it's ok now...`, id_str)
-    .then(() => {
-      console.log('Responded to tweet');
-    })
-    .catch((error) => {
-      console.log(error);
+  // If tweet containes image
+  if (entities.media.length > 0) {
+    console.log('foto jest - handleTweet');
+    const imageUrl = tweetData[0].entities.media[0].media_url_https;
+    await uploadImage(imageUrl, {
+      bucket: process.env.BUCKET,
+      key,
     });
+  } else {
+    const message = createMessage(user.screen_name);
+    replyToTweet(message, key);
+  }
 };

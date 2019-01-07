@@ -13,15 +13,17 @@ const replyToTweet = async (status, tweetId) => {
       in_reply_to_status_id: tweetId,
       auto_populate_reply_metadata: true,
     },
+    headers: {
+      Connection: 'Keep-Alive',
+    },
     resolveWithFullResponse: true,
   };
 
-  // POST request to create webhook config
   try {
-    const postResponse = await request.post(requestOptions);
-    console.log(postResponse);
-  } catch (e) {
-    console.log(e);
+    await request.post(requestOptions);
+  } catch (err) {
+    console.log(err);
+    console.log('Cannot post tweet');
   }
 };
 module.exports = { replyToTweet };
