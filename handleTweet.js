@@ -5,7 +5,8 @@ const { replyToTweet } = require('./helpers/replyToTweet');
 
 module.exports.handler = async (event) => {
   const tweet = JSON.parse(event.body);
-  const tweetData = tweet.tweet_create_events;
+  const tweetData = await tweet.tweet_create_events;
+
   if (typeof tweetData === 'undefined' || tweetData.length < 1) {
     console.log('Not a new tweet event');
     return;
@@ -17,10 +18,10 @@ module.exports.handler = async (event) => {
   }
 
   const { id_str, user, entities } = tweetData[0]; // eslint-disable-line
-  const key = `${id_str}___${user.screen_name}`; // eslint-disable-line
+  const key = `${id_str}___---${user.screen_name}`; // eslint-disable-line
 
   // If tweet containes image
-  if (entities.media.length > 0) {
+  if (entities.hasOwnProperty('media')) { // eslint-disable-line
     console.log('foto jest - handleTweet');
     const imageUrl = tweetData[0].entities.media[0].media_url_https;
     await uploadImage(imageUrl, {
@@ -28,7 +29,8 @@ module.exports.handler = async (event) => {
       key,
     });
   } else {
+    console.log('no photo?')
     const message = createMessage(user.screen_name);
-    replyToTweet(message, key);
+    await replyToTweet(message, key);
   }
 };

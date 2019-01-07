@@ -10,7 +10,7 @@ const requestOptions = {
   },
   form: {
     url: auth.crc_url,
-  }
+  },
 };
 
 // POST request to create webhook config
