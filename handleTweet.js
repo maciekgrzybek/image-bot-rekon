@@ -8,13 +8,11 @@ module.exports.handler = async (event) => {
   const tweetData = await tweet.tweet_create_events;
 
   if (typeof tweetData === 'undefined' || tweetData.length < 1) {
-    console.log('Not a new tweet event');
-    return;
+    return console.log('Not a new tweet event');
   }
 
   if (tweet.for_user_id === tweetData[0].user.id_str) {
-    console.log('Same user, not sending response.');
-    return;
+    return console.log('Same user, not sending response.');
   }
 
   const { id_str, user, entities } = tweetData[0]; // eslint-disable-line
@@ -22,14 +20,12 @@ module.exports.handler = async (event) => {
 
   // If tweet containes image
   if (entities.hasOwnProperty('media')) { // eslint-disable-line
-    console.log('foto jest - handleTweet');
     const imageUrl = tweetData[0].entities.media[0].media_url_https;
     await uploadImage(imageUrl, {
       bucket: process.env.BUCKET,
       key,
     });
   } else {
-    console.log('no photo?')
     const message = createMessage(user.screen_name);
     await replyToTweet(message, key);
   }

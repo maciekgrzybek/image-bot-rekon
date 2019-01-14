@@ -3,11 +3,11 @@ service: image-rekon-bot
 custom:
   bucket: image-rekon-bot-images
 
-
 provider:
   name: aws
   runtime: nodejs8.10
   profile: aws-private
+  region: eu-west-1
   iamRoleStatements:
     - Effect: "Allow"
       Action:
@@ -19,14 +19,39 @@ provider:
       Resource: "*"
     
 functions:
+
   handleCrc:
     handler: handleCrc.handler
     events:
       - http:
-          path: webhook/twitter
+          path: twitter/webhook/crc
           method: get
-    environment:
-      TWITTER_CONSUMER_SECRET: ${file(./serverless.env.yml):twitter.TWITTER_CONSUMER_SECRET}
+    description: Lambda function to complete Twitter API auth challenge.
+
+  registerWebhook:
+    handler: src/registerWebhook.handler
+    events:
+      - http:
+          path: twitter/webhook/register
+          method: get
+    description: Lambda function that register new webhook in Twitter Acitivty API.
+
+  deleteWebhook:
+    handler: src/deleteWebhook.handler
+    events:
+      - http:
+          path: twitter/webhook/delete
+          method: get
+    description: Lambda function that delete current webhook in Twitter Acitivty API.
+
+  registerSubscription:
+    handler: src/registerSubscription.handler
+    events:
+      - http:
+          path: twitter/subscription/register
+          method: get
+    description: Lambda function that register subscription in Twitter Acitivty API.
+
   handleTweet:
     handler: handleTweet.handler
     events:
@@ -34,11 +59,14 @@ functions:
           path: webhook/twitter
           method: post
     environment:
-      BUCKET: ${self:custom.bucket} 
+      BUCKET: ${self:custom.bucket}
+    description: Lambda function that handles webhook data sent by Twitter Acitivty API.
+
   respondToTweetWithImage:
     handler: respondToTweetWithImage.handler
     events:
       - s3: 
           bucket: ${self:custom.bucket}
           event: s3:ObjectCreated:*
+    description: Lambda function that send response to Tweet with image.
 

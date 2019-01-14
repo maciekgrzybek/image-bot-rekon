@@ -17,8 +17,8 @@ const recognizeImage = async (meta) => {
     const data = await rekognition.detectLabels(params).promise();
     return data.Labels;
   } catch (err) {
-    console.log(err);
-    console.log('Cannot recognize image');
+    console.log(err); // eslint-disable-line
+    console.log('Cannot recognize image'); // eslint-disable-line
   }
 };
 

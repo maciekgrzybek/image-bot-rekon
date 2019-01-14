@@ -1,12 +1,10 @@
 const { encodeCrc } = require('./helpers/encodeCrc');
-const { auth } = require('./helpers/auth');
-
-// const getCrcToken = ramda.path(['queryStringParameters', 'crc_token']);
+const { env } = require('./helpers/envSecrets');
 
 module.exports.handler = async (event) => {
   const responseToken = encodeCrc(
     event.queryStringParameters.crc_token,
-    auth.credentials.consumer_secret,
+    env.credentials.consumer_secret,
   );
   return {
     statusCode: 200,

@@ -1,21 +1,25 @@
+/* eslint no-console: 0 */
 const request = require('request-promise');
-const { auth } = require('../helpers/auth');
+const { env } = require('../helpers/envSecrets');
 
-// request options
-const requestOptions = {
-  url: `https://api.twitter.com/1.1/account_activity/all/${auth.environment}/webhooks.json`,
-  oauth: auth.credentials,
-  headers: {
-    'Content-type': 'application/x-www-form-urlencoded',
-  },
-  form: {
-    url: auth.crc_url,
-  },
+module.exports.handler = async () => {
+  const requestOptions = {
+    url: `https://api.twitter.com/1.1/account_activity/all/${env.environment}/webhooks.json`,
+    oauth: env.credentials,
+    headers: {
+      'Content-type': 'application/x-www-form-urlencoded',
+    },
+    form: {
+      url: env.crc_url,
+    },
+  };
+
+  try {
+    const response = await request.post(requestOptions);
+    console.log(response);
+    console.log('Succesfully register webhook');
+  } catch (err) {
+    console.log(err);
+    console.log('Cannot register webhhook');
+  }
 };
-
-// POST request to create webhook config
-request.post(requestOptions).then((response) => {
-  console.log(response);
-}).catch((response) => {
-  console.log(response);
-});

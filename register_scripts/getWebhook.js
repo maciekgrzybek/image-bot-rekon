@@ -1,15 +1,19 @@
+/* eslint no-console: 0 */
 const request = require('request-promise');
-const { auth } = require('../helpers/auth');
+const { env } = require('../helpers/envSecrets');
 
-// request options
-const requestOptions = {
-  url: `https://api.twitter.com/1.1/account_activity/all/${auth.environment}/webhooks.json`,
-  oauth: auth.credentials,
+const getWebhook = async () => {
+  const requestOptions = {
+    url: `https://api.twitter.com/1.1/account_activity/all/${env.environment}/webhooks.json`,
+    oauth: env.credentials,
+  };
+
+  try {
+    return await request.get(requestOptions);
+  } catch (err) {
+    console.log('Cannot get webhook');
+    console.log(err);
+  }
 };
 
-// POST request to create webhook config
-request.get(requestOptions).then((response) => {
-  console.log(response);
-}).catch((response) => {
-  console.log(response);
-});
+module.exports = { getWebhook };

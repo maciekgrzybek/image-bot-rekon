@@ -1,19 +1,21 @@
-const request = require('request-promise')
-const { auth } = require('../helpers/auth.js')
+/* eslint no-console: 0 */
+const request = require('request-promise');
+const { env } = require('../helpers/envSecrets.js');
 
+module.exports.handler = async () => {
+  const requestOptions = {
+    url: `https://api.twitter.com/1.1/account_activity/all/${env.environment}/subscriptions.json`,
+    oauth: env.credentials,
+    resolveWithFullResponse: true,
+  };
 
-// request options
-var request_options = {
-  url: `https://api.twitter.com/1.1/account_activity/all/${auth.environment}/subscriptions.json`,
-  oauth: auth.credentials,
-  resolveWithFullResponse: true
-}
-
-// POST request to create webhook config
-request.post(request_options).then(function (response) {
-  if (response.statusCode == 204) {
-    console.log('Subscription added. Yay!')
+  try {
+    const response = await request.post(requestOptions);
+    if (response.statusCode === 204) {
+      console.log('Subscription added. Yay!');
+    }
+  } catch (err) {
+    console.log(err);
+    console.log('Cannot register subscription');
   }
-}).catch(function (response) {
-  console.log(response.error)
-})
+};
