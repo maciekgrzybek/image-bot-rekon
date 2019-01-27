@@ -1,19 +1,18 @@
-const request = require('request-promise')
-const { auth } = require('../helpers/auth.js')
 
+const TwitterController = require('../TwitterController');
 
-// request options
-var request_options = {
-  url: `https://api.twitter.com/1.1/account_activity/all/${auth.environment}/subscriptions.json`,
-  oauth: auth.credentials,
-  resolveWithFullResponse: true
-}
+module.exports.handler = async () => {
 
-// POST request to create webhook config
-request.post(request_options).then(function (response) {
-  if (response.statusCode == 204) {
-    console.log('Subscription added. Yay!')
-  }
-}).catch(function (response) {
-  console.log(response.error)
-})
+  const { TWITTER_CONSUMER_KEY, TWITTER_CONSUMER_SECRET, TWITTER_TOKEN, TWITTER_TOKEN_SECRET, URL_BASE, ENVIRONMENT, CRC_URL } = process.env;
+  const controller = new TwitterController(
+    TWITTER_CONSUMER_KEY,
+    TWITTER_CONSUMER_SECRET,
+    TWITTER_TOKEN,
+    TWITTER_TOKEN_SECRET,
+    URL_BASE,
+    ENVIRONMENT,
+    CRC_URL,
+  );
+
+  await controller.registerSubscription();
+};

@@ -1,18 +1,19 @@
-const request = require('request-promise');
-const { auth } = require('../helpers/auth');
+/* eslint no-console: 0 */
 
-// request options
-const requestOptions = {
-  url: `https://api.twitter.com/1.1/account_activity/all/${auth.environment}/webhooks/${auth.webhook_id}.json`,
-  oauth: auth.credentials,
-  resolveWithFullResponse: true,
+const TwitterController = require('../TwitterController');
+
+module.exports.handler = async () => {
+
+  const { TWITTER_CONSUMER_KEY, TWITTER_CONSUMER_SECRET, TWITTER_TOKEN, TWITTER_TOKEN_SECRET, URL_BASE, ENVIRONMENT, CRC_URL } = process.env;
+  const controller = new TwitterController(
+    TWITTER_CONSUMER_KEY,
+    TWITTER_CONSUMER_SECRET,
+    TWITTER_TOKEN,
+    TWITTER_TOKEN_SECRET,
+    URL_BASE,
+    ENVIRONMENT,
+    CRC_URL,
+  );
+
+  await controller.deleteWebhook();
 };
-
-// Remove Webhook id
-request.delete(requestOptions)
-  .then(() => {
-    console.log('Webhook deleted');
-  })
-  .catch((response) => {
-    console.log(response);
-  });

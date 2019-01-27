@@ -1,4 +1,4 @@
-const createMessage = (username, labels = []) => {
+module.exports = (username, labels = []) => {
   let message = '';
 
   if (labels.length === 0) {
@@ -15,5 +15,3 @@ const createMessage = (username, labels = []) => {
 
   return message;
 };
-
-module.exports = { createMessage };

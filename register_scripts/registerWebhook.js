@@ -1,21 +1,18 @@
-const request = require('request-promise');
-const { auth } = require('../helpers/auth');
+/* eslint no-console: 0 */
+const TwitterController = require('../TwitterController');
 
-// request options
-const requestOptions = {
-  url: `https://api.twitter.com/1.1/account_activity/all/${auth.environment}/webhooks.json`,
-  oauth: auth.credentials,
-  headers: {
-    'Content-type': 'application/x-www-form-urlencoded',
-  },
-  form: {
-    url: auth.crc_url,
-  }
+module.exports.handler = async () => {
+
+  const { TWITTER_CONSUMER_KEY, TWITTER_CONSUMER_SECRET, TWITTER_TOKEN, TWITTER_TOKEN_SECRET, URL_BASE, ENVIRONMENT, CRC_URL } = process.env;
+  const controller = new TwitterController(
+    TWITTER_CONSUMER_KEY,
+    TWITTER_CONSUMER_SECRET,
+    TWITTER_TOKEN,
+    TWITTER_TOKEN_SECRET,
+    URL_BASE,
+    ENVIRONMENT,
+    CRC_URL,
+  );
+
+  await controller.registerWebhook();
 };
-
-// POST request to create webhook config
-request.post(requestOptions).then((response) => {
-  console.log(response);
-}).catch((response) => {
-  console.log(response);
-});
