@@ -1,6 +1,6 @@
 const AWS = require('aws-sdk');
 
-const recognizeImage = async (meta) => {
+module.exports = async (meta) => {
   const rekognition = new AWS.Rekognition();
   const params = {
     Image: {
@@ -21,5 +21,3 @@ const recognizeImage = async (meta) => {
     console.log('Cannot recognize image'); // eslint-disable-line
   }
 };
-
-module.exports = { recognizeImage };

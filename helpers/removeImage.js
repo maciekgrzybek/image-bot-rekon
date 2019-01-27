@@ -1,7 +1,7 @@
 /* eslint no-console: 0 */
 const AWS = require('aws-sdk');
 
-const removeImage = async (meta) => {
+module.export = async (meta) => {
   const s3 = new AWS.S3();
   const params = {
     Bucket: meta.bucket.name,
@@ -15,5 +15,3 @@ const removeImage = async (meta) => {
     console.log('Cannot delete image.');
   }
 };
-
-module.exports = { removeImage };

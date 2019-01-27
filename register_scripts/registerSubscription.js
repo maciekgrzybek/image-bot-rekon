@@ -1,21 +1,18 @@
-/* eslint no-console: 0 */
-const request = require('request-promise');
-const { env } = require('../helpers/envSecrets.js');
+
+const TwitterController = require('../TwitterController');
 
 module.exports.handler = async () => {
-  const requestOptions = {
-    url: `https://api.twitter.com/1.1/account_activity/all/${env.environment}/subscriptions.json`,
-    oauth: env.credentials,
-    resolveWithFullResponse: true,
-  };
 
-  try {
-    const response = await request.post(requestOptions);
-    if (response.statusCode === 204) {
-      console.log('Subscription added. Yay!');
-    }
-  } catch (err) {
-    console.log(err);
-    console.log('Cannot register subscription');
-  }
+  const { TWITTER_CONSUMER_KEY, TWITTER_CONSUMER_SECRET, TWITTER_TOKEN, TWITTER_TOKEN_SECRET, URL_BASE, ENVIRONMENT, CRC_URL } = process.env;
+  const controller = new TwitterController(
+    TWITTER_CONSUMER_KEY,
+    TWITTER_CONSUMER_SECRET,
+    TWITTER_TOKEN,
+    TWITTER_TOKEN_SECRET,
+    URL_BASE,
+    ENVIRONMENT,
+    CRC_URL,
+  );
+
+  await controller.registerSubscription();
 };

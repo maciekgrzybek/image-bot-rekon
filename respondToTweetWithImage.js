@@ -1,7 +1,7 @@
-const { replyToTweet } = require('./helpers/replyToTweet');
-const { recognizeImage } = require('./helpers/recognizeImage');
-const { removeImage } = require('./helpers/removeImage');
-const { createMessage } = require('./helpers/createMessage');
+const replyToTweet = require('./helpers/replyToTweet');
+const recognizeImage = require('./helpers/recognizeImage');
+const removeImage = require('./helpers/removeImage');
+const createMessage = require('./helpers/createMessage');
 
 
 module.exports.handler = async (event) => {

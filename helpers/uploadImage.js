@@ -4,8 +4,8 @@ const AWS = require('aws-sdk');
 
 const s3 = new AWS.S3();
 
-const uploadImage = async (image, meta) => {
-  console.log('uploading image....');
+module.exports = async (image, meta) => {
+  console.log('Uploading image....');
 
   const mediaResponse = await fetch(image);
   const bufferedMedia = await mediaResponse.buffer();
@@ -17,11 +17,9 @@ const uploadImage = async (image, meta) => {
 
   try {
     const uploadedImage = await s3.putObject(params).promise();
-    console.log(uploadedImage, 'poszlo?');
+    console.log(uploadedImage, 'Image uploaded.');
   } catch (err) {
     console.log(err);
     console.log('Cannot upload.');
   }
 };
-
-module.exports = { uploadImage };

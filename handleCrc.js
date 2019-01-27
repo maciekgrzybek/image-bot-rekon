@@ -1,10 +1,9 @@
-const { encodeCrc } = require('./helpers/encodeCrc');
-const { env } = require('./helpers/envSecrets');
+const encodeCrc = require('./helpers/encodeCrc');
 
 module.exports.handler = async (event) => {
   const responseToken = encodeCrc(
     event.queryStringParameters.crc_token,
-    env.credentials.consumer_secret,
+    process.env.TWITTER_CONSUMER_SECRET,
   );
   return {
     statusCode: 200,

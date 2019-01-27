@@ -1,11 +1,15 @@
 /* eslint no-console: 0 */
 const request = require('request-promise');
-const { env } = require('./envSecrets');
 
-const replyToTweet = async (status, tweetId) => {
+module.exports = async (status, tweetId) => {
   const requestOptions = {
     url: 'https://api.twitter.com/1.1/statuses/update.json?',
-    oauth: env.credentials,
+    oauth: {
+      consumer_key: process.env.TWITTER_CONSUMER_KEY,
+      consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
+      token: process.env.TWITTER_TOKEN,
+      token_secret: process.env.TWITTER_TOKEN_SECRET,
+    },
     form: {
       status,
       in_reply_to_status_id: tweetId,
@@ -24,5 +28,3 @@ const replyToTweet = async (status, tweetId) => {
     console.log('Cannot post tweet.');
   }
 };
-
-module.exports = { replyToTweet };

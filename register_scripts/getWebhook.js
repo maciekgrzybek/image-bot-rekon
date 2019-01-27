@@ -1,19 +1,18 @@
-/* eslint no-console: 0 */
-const request = require('request-promise');
-const { env } = require('../helpers/envSecrets');
 
-const getWebhook = async () => {
-  const requestOptions = {
-    url: `https://api.twitter.com/1.1/account_activity/all/${env.environment}/webhooks.json`,
-    oauth: env.credentials,
-  };
+const TwitterController = require('../TwitterController');
 
-  try {
-    return await request.get(requestOptions);
-  } catch (err) {
-    console.log('Cannot get webhook');
-    console.log(err);
-  }
+module.exports.handler = async () => {
+
+  const { TWITTER_CONSUMER_KEY, TWITTER_CONSUMER_SECRET, TWITTER_TOKEN, TWITTER_TOKEN_SECRET, URL_BASE, ENVIRONMENT, CRC_URL } = process.env;
+  const controller = new TwitterController(
+    TWITTER_CONSUMER_KEY,
+    TWITTER_CONSUMER_SECRET,
+    TWITTER_TOKEN,
+    TWITTER_TOKEN_SECRET,
+    URL_BASE,
+    ENVIRONMENT,
+    CRC_URL,
+  );
+
+  await controller.getWebhook();
 };
-
-module.exports = { getWebhook };
