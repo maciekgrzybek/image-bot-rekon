@@ -65,7 +65,7 @@ module.exports = class TwitterController {
       console.log('Succesfully register webhook');
     } catch (err) {
       console.log(err);
-      console.log('Cannot register webhhook');
+      console.log('Cannot register webhook');
     }
   }
 
@@ -97,8 +97,6 @@ module.exports = class TwitterController {
   async deleteWebhook() {
     const webhook = await this.getWebhook();
     const parsedWebhook = JSON.parse(webhook.body);
-    // console.log(parsedWebhook)
-    console.log(parsedWebhook)
     const requestOptions = this.setRequestOptions('deleteWebhook', parsedWebhook[0].id);
 
     try {
