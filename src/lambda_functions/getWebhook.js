@@ -1,4 +1,3 @@
-
 const TwitterController = require('../TwitterController');
 
 module.exports.handler = async () => {

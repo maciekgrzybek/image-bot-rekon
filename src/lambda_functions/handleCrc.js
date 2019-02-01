@@ -1,4 +1,4 @@
-const encodeCrc = require('./helpers/encodeCrc');
+const encodeCrc = require('../helpers/encodeCrc');
 
 module.exports.handler = async (event) => {
   const responseToken = encodeCrc(

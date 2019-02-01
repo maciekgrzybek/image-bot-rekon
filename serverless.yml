@@ -38,7 +38,7 @@ provider:
 functions:
 
   handleCrc:
-    handler: handleCrc.handler
+    handler: src/lambda_function/handleCrc.handler
     events:
       - http:
           path: twitter/webhook/handleapi
@@ -46,7 +46,7 @@ functions:
     description: Lambda function to complete Twitter API auth challenge.
 
   registerWebhook:
-    handler: register_scripts/registerWebhook.handler
+    handler: src/lambda_function/registerWebhook.handler
     events:
       - http:
           path: twitter/webhook/register
@@ -54,7 +54,7 @@ functions:
     description: Lambda function that register new webhook in Twitter Acitivty API.
 
   getWebhook:
-    handler: register_scripts/getWebhook.handler
+    handler: src/lambda_function/getWebhook.handler
     events:
       - http:
           path: twitter/webhook/get
@@ -62,7 +62,7 @@ functions:
     description: Lambda function that get webhook in Twitter Acitivty API.
 
   deleteWebhook:
-    handler: register_scripts/deleteWebhook.handler
+    handler: src/lambda_function/deleteWebhook.handler
     events:
       - http:
           path: twitter/webhook/delete
@@ -70,7 +70,7 @@ functions:
     description: Lambda function that delete current webhook in Twitter Acitivty API.
 
   registerSubscription:
-    handler: register_scripts/registerSubscription.handler
+    handler: src/lambda_function/registerSubscription.handler
     events:
       - http:
           path: twitter/subscription/register
@@ -78,7 +78,7 @@ functions:
     description: Lambda function that register subscription in Twitter Acitivty API.
 
   handleTweet:
-    handler: handleTweet.handler
+    handler: src/lambda_function/handleTweet.handler
     events:
       - http:
           path: twitter/webhook/handleapi
@@ -86,7 +86,7 @@ functions:
     description: Lambda function that handles webhook data sent by Twitter Acitivty API.
 
   respondToTweetWithImage:
-    handler: respondToTweetWithImage.handler
+    handler: src/lambda_function/respondToTweetWithImage.handler
     events:
       - s3: 
           bucket: ${self:custom.BUCKET}
