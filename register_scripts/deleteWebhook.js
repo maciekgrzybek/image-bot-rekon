@@ -1,18 +1,14 @@
-/* eslint no-console: 0 */
-
 const TwitterController = require('../TwitterController');
 
 module.exports.handler = async () => {
-
-  const { TWITTER_CONSUMER_KEY, TWITTER_CONSUMER_SECRET, TWITTER_TOKEN, TWITTER_TOKEN_SECRET, URL_BASE, ENVIRONMENT, CRC_URL } = process.env;
   const controller = new TwitterController(
-    TWITTER_CONSUMER_KEY,
-    TWITTER_CONSUMER_SECRET,
-    TWITTER_TOKEN,
-    TWITTER_TOKEN_SECRET,
-    URL_BASE,
-    ENVIRONMENT,
-    CRC_URL,
+    process.env.TWITTER_CONSUMER_KEY,
+    process.env.TWITTER_CONSUMER_SECRET,
+    process.env.TWITTER_TOKEN,
+    process.env.TWITTER_TOKEN_SECRET,
+    process.env.URL_BASE,
+    process.env.ENVIRONMENT,
+    process.env.CRC_URL,
   );
 
   await controller.deleteWebhook();
