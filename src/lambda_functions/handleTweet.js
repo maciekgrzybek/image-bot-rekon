@@ -1,7 +1,7 @@
 /* eslint no-console: 0 */
-const uploadImage = require('./helpers/uploadImage');
-const createMessage = require('./helpers/createMessage');
-const replyToTweet = require('./helpers/replyToTweet');
+const uploadImage = require('../helpers/uploadImage');
+const createMessage = require('../helpers/createMessage');
+const replyToTweet = require('../helpers/replyToTweet');
 
 module.exports.handler = async (event) => {
   const tweet = JSON.parse(event.body);
