@@ -9,7 +9,8 @@
     "js-yaml": "^3.12.0",
     "node-fetch": "^2.3.0",
     "request": "^2.88.0",
-    "request-promise": "^4.2.2"
+    "request-promise": "^4.2.2",
+    "serverless": "^1.36.3"
   },
   "devDependencies": {
     "eslint": "^5.9.0",
