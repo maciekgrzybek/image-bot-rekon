@@ -1,7 +1,7 @@
 /* eslint no-console: 0 */
 const uploadImage = require('../helpers/uploadImage');
 const createMessage = require('../helpers/createMessage');
-const replyToTweet = require('../helpers/replyToTweet');
+const TwitterController = require('../TwitterController');
 
 module.exports.handler = async (event) => {
   const tweet = JSON.parse(event.body);
@@ -26,7 +26,16 @@ module.exports.handler = async (event) => {
       key,
     });
   } else {
+    const controller = new TwitterController(
+      process.env.TWITTER_CONSUMER_KEY,
+      process.env.TWITTER_CONSUMER_SECRET,
+      process.env.TWITTER_TOKEN,
+      process.env.TWITTER_TOKEN_SECRET,
+      process.env.URL_CREATE,
+      process.env.ENVIRONMENT,
+      process.env.CRC_URL,
+    );
     const message = createMessage(user.screen_name);
-    await replyToTweet(message, key);
+    await controller.createTweet(message, key);
   }
 };

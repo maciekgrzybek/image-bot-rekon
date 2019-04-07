@@ -21,13 +21,13 @@ module.exports = class TwitterController {
   }
 
   setRequestOptions(type, webhhokId) {
-    let path = null;
+    let url = null;
     let content = {};
     const { urlBase, environment, credentials, crcUrl } = this;
 
     switch (type) {
       case ('registerWebhook'):
-        path = 'webhooks';
+        url = `${urlBase}${environment}/webhooks.json`;
         content = {
           form: {
             url: crcUrl,
@@ -35,19 +35,22 @@ module.exports = class TwitterController {
         };
         break;
       case ('getWebhook'):
-        path = 'webhooks';
+        url = `${urlBase}${environment}/webhooks.json`;
         break;
       case ('deleteWebhook'):
-        path = `webhooks/${webhhokId}`;
+        url = `${urlBase}${environment}/webhooks/${webhhokId}.json`;
         break;
       case ('registerSubscription'):
-        path = 'subscriptions';
+        url = `${urlBase}${environment}/subscriptions.json`;
+        break;
+      case ('createTweet'):
+        url = `${urlBase}update.json`;
         break;
       default:
-        path = 'webhhoks';
+        url = `${urlBase}${environment}/webhooks.json`;
     }
     return Object.assign({}, {
-      url: `${urlBase}${environment}/${path}.json`,
+      url,
       oauth: credentials,
       headers: {
         'Content-type': 'application/x-www-form-urlencoded',
@@ -106,6 +109,23 @@ module.exports = class TwitterController {
     } catch (err) {
       console.log('Cannot delete webhook');
       console.log(err);
+    }
+  }
+
+  async createTweet(status, tweetID) {
+    const requestOptions = Object.assign({}, this.setRequestOptions('createTweet'), {
+      form: {
+        status,
+        in_reply_to_status_id: tweetID,
+        auto_populate_reply_metadata: true,
+      },
+    });
+
+    try {
+      await request.post(requestOptions);
+    } catch (err) {
+      console.log(err);
+      console.log('Cannot post tweet.');
     }
   }
 };

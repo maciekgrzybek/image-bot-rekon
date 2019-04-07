@@ -9,6 +9,7 @@ custom:
   TWITTER_TOKEN: ${file(./serverless.env.yml):TWITTER_TOKEN}
   TWITTER_TOKEN_SECRET: ${file(./serverless.env.yml):TWITTER_TOKEN_SECRET}
   URL_BASE: ${file(./serverless.env.yml):URL_BASE}
+  URL_CREATE: ${file(./serverless.env.yml):URL_CREATE}
 
 provider:
   name: aws
@@ -23,6 +24,7 @@ provider:
     ENVIRONMENT: ${self:custom.ENVIRONMENT} 
     CRC_URL: ${self:custom.CRC_URL}
     URL_BASE: ${self:custom.URL_BASE}
+    URL_CREATE: ${self:custom.URL_CREATE}
     BUCKET: ${self:custom.BUCKET}
     
   iamRoleStatements:
